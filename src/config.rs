@@ -15,6 +15,13 @@ fn parse_content_dir_from_config() -> Option<String> {
         .trim_matches('"')
         .trim();
 
+    // if last char is a slash, remove it
+    let dir = if dir.ends_with('/') {
+        &dir[..dir.len() - 1]
+    } else {
+        dir
+    };
+
     if dir.is_empty() {
         None
     } else {
@@ -47,6 +54,8 @@ impl Debug for Command {
 pub struct Config {
     pub cmd: Command,
     pub title: String,
+    pub content: String,
+    pub tags: Vec<String>,
     pub content_dir: String,
 }
 
@@ -62,11 +71,6 @@ impl Config {
         if let Err(e) = &cmd {
             return Err(e);
         }
-
-        let title = match args.next() {
-            Some(s) => s,
-            None => return Err("Missing title"),
-        };
 
         let content_dir = match parse_content_dir_from_config() {
             Some(dir) => dir,
@@ -89,7 +93,9 @@ impl Config {
 
         Ok(Self {
             cmd: cmd.unwrap(),
-            title,
+            tags: vec![],
+            title: String::new(),
+            content: String::new(),
             content_dir,
         })
     }
