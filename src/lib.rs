@@ -1,14 +1,14 @@
-//! [![url-github]](https://github.com/averted/notes-rs)
-//! [![url-crates]](https://crates.io/crates/notes-rs)
+//! [![url-github]](https://github.com/averted/soup-rs)
+//! [![url-crates]](https://crates.io/crates/soup-rs)
 //!
 //! [url-github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 //! [url-crates]: https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust
 //!
-//! `notes-rs` is a cli tool to help you manage your [Zola](https://github.com/getzola/zola) site.
+//! `soup-rs` is a cli tool to help you manage your [Zola](https://github.com/getzola/zola) site.
 //!
 //! ## Usage:
 //! ```sh
-//! $ notes-rs <COMMAND = "add">
+//! $ soup-rs <COMMAND = "add">
 //!
 //! Arguments:
 //!   <COMMAND>             Command to execute (i.e. "add")

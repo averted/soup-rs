@@ -3,7 +3,7 @@ A cli tool to help you manage your Zola site.
 
 # Usage
 ```
-$ notes-rs <COMMAND = "add">
+$ soup-rs <COMMAND = "add">
 
 Arguments:
   <COMMAND>        Command to run.

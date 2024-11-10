@@ -1,9 +1,10 @@
 mod command;
 
-use crate::errors::NotesError;
+use crate::errors::SoupError;
 use command::Command;
+use std::env;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 #[derive(Debug)]
 pub struct ZolaConfig {
@@ -22,10 +23,9 @@ pub struct Config {
 }
 
 impl Config {
-    const LOCAL_PATH: &'static str = "config.cfg";
     const REMOTE_PATH: &'static str = "config.toml";
 
-    pub fn new<T: Iterator<Item = String>>(mut args: T) -> Result<Config, NotesError> {
+    pub fn new<T: Iterator<Item = String>>(mut args: T) -> Result<Config, SoupError> {
         args.next();
 
         // Parse command
@@ -35,9 +35,10 @@ impl Config {
         }?;
 
         // Parse local config
-        let local_config = match fs::read_to_string(Config::LOCAL_PATH) {
+        let config_path = PathBuf::from(env::var("HOME").unwrap()).join(".config/soup.cfg");
+        let local_config = match fs::read_to_string(config_path) {
             Ok(c) => c,
-            Err(_) => return Err(NotesError::MissingConfig),
+            Err(_) => return Err(SoupError::MissingConfig),
         };
         let dir = Self::parse_local(local_config)?;
 
@@ -45,7 +46,7 @@ impl Config {
         let remote_path = format!("{}/{}", dir, Config::REMOTE_PATH);
         let remote_config = match fs::read_to_string(remote_path) {
             Ok(c) => c,
-            Err(_) => return Err(NotesError::MissingConfig),
+            Err(_) => return Err(SoupError::MissingConfig),
         };
         let (base_url, output_dir) = Self::parse_remote(remote_config)?;
 
@@ -55,7 +56,7 @@ impl Config {
             title: String::new(),
             content: String::new(),
             zola: ZolaConfig {
-                dir: Path::new(&dir).to_owned(),
+                dir: PathBuf::from(&dir),
                 base_url,
                 output_dir,
             },
@@ -63,18 +64,18 @@ impl Config {
     }
 
     // Parses contents of local config file
-    fn parse_local(content: String) -> Result<String, NotesError> {
+    fn parse_local(content: String) -> Result<String, SoupError> {
         for line in content.lines() {
             if line.starts_with("zola_dir") {
                 return Ok(Self::trim_value(line.trim_start_matches("zola_dir")));
             }
         }
 
-        return Err(NotesError::InvalidConfig);
+        return Err(SoupError::InvalidConfig);
     }
 
     // Parses contents of config.toml at Zola directory
-    fn parse_remote(content: String) -> Result<(Option<String>, Option<String>), NotesError> {
+    fn parse_remote(content: String) -> Result<(Option<String>, Option<String>), SoupError> {
         let mut base_url = None;
         let mut output_dir = None;
 

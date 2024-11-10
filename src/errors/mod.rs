@@ -1,18 +1,20 @@
+use std::env;
 use std::fs;
+use std::path::PathBuf;
 
 #[derive(Debug, PartialEq)]
-pub enum NotesError {
+pub enum SoupError {
     MissingConfig,
     InvalidConfig,
     InvalidCommand,
 }
 
 /// Prints out error description based on type
-pub fn describe_error(err: NotesError) {
+pub fn describe_error(err: SoupError) {
     match err {
-        NotesError::MissingConfig => missing_config(),
-        NotesError::InvalidCommand => invalid_command(),
-        NotesError::InvalidConfig => invalid_config(),
+        SoupError::MissingConfig => missing_config(),
+        SoupError::InvalidCommand => invalid_command(),
+        SoupError::InvalidConfig => invalid_config(),
     }
 }
 
@@ -21,11 +23,11 @@ fn missing_config() {
     println!("-------");
     println!("Attempting to create one...");
 
-    let name = "config.cfg";
+    let config_path = PathBuf::from(env::var("HOME").unwrap()).join(".config/soup.cfg");
     let contents = "zola_dir=/path/to/zola/dir";
 
-    match fs::write(name, contents) {
-        Ok(_) => println!("Created: {}", name),
+    match fs::write(&config_path, contents) {
+        Ok(_) => println!("Created: {}", config_path.display()),
         Err(e) => eprintln!("Error creating config file: {}", e),
     }
 }

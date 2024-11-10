@@ -1,10 +1,10 @@
 [package]
-name = "notes-rs"
+name = "soup-rs"
 readme = "README.md"
 version = "0.1.0"
 authors = ["Alexander Vitiuk"]
 categories = ["cli"]
-repository = "https://github.com/averted/notes-rs"
+repository = "https://github.com/averted/soup-rs"
 description = "A cli tool to help you manage your Zola site."
 license = "MIT OR Apache-2.0"
 edition = "2021"

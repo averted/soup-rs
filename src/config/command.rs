@@ -1,4 +1,4 @@
-use crate::errors::NotesError;
+use crate::errors::SoupError;
 
 #[derive(PartialEq)]
 pub enum Command {
@@ -6,10 +6,10 @@ pub enum Command {
 }
 
 impl Command {
-    pub fn from(s: String) -> Result<Command, NotesError> {
+    pub fn from(s: String) -> Result<Command, SoupError> {
         match s.as_str() {
             "add" => Ok(Command::Add),
-            _ => Err(NotesError::InvalidCommand),
+            _ => Err(SoupError::InvalidCommand),
         }
     }
 }
@@ -31,7 +31,7 @@ mod test {
         assert_eq!(Command::from("add".to_string()), Ok(Command::Add));
         assert_eq!(
             Command::from("invalid".to_string()),
-            Err(NotesError::InvalidCommand)
+            Err(SoupError::InvalidCommand)
         );
     }
 }
