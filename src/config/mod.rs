@@ -71,7 +71,7 @@ impl Config {
             }
         }
 
-        return Err(SoupError::InvalidConfig);
+        Err(SoupError::InvalidConfig)
     }
 
     // Parses contents of config.toml at Zola directory
@@ -90,7 +90,7 @@ impl Config {
             }
         }
 
-        return Ok((base_url, output_dir));
+        Ok((base_url, output_dir))
     }
 
     // Trims value from key-value pair

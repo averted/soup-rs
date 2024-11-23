@@ -43,5 +43,5 @@ fn invalid_command() {
     println!("-------");
     println!("Available commands:");
     println!("  add      - Adds a new note");
-    println!("");
+    println!();
 }

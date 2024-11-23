@@ -46,7 +46,7 @@ pub fn get_title(config: &mut Config) {
         panic!("Empty title");
     }
 
-    println!("");
+    println!();
 
     config.title = input.trim().to_string();
 }
@@ -69,7 +69,7 @@ pub fn get_tags(config: &mut Config) {
         let tags = String::from_utf8(output.stdout).unwrap();
         let tags = parse_invalid_tags(tags.split('\n').collect());
 
-        if tags.len() > 0 {
+        if !tags.is_empty() {
             println!("Enter tags [{}]:", tags.join(", "));
             println!("----------");
         } else {
@@ -126,7 +126,7 @@ pub fn write(config: &Config) {
     prefix.push_str(&format!("title = \"{}\"\n", config.title));
     prefix.push_str(&format!("date = {}\n", Local::now().format("%Y-%m-%d")));
 
-    if config.tags.len() > 0 {
+    if !config.tags.is_empty() {
         prefix.push_str(&format!("\n[taxonomies]\ntags = {:?}\n", config.tags));
     }
 
@@ -170,7 +170,7 @@ pub fn publish(config: &Config) {
     git_commit
         .arg("commit")
         .arg("-m")
-        .arg(&format!("New post: \"{}\"", config.title))
+        .arg(format!("New post: \"{}\"", config.title))
         .current_dir(&config.zola.dir)
         .status()
         .expect("Failed to commit changes");
